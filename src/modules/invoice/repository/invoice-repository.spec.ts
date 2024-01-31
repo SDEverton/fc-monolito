@@ -9,9 +9,6 @@ import InvoiceRepository from './invoice.repository';
 
 describe('InvoiceRepository', () => {
   let sequelize: Sequelize;
-  let repository: InvoiceRepository;
-  let mockInvoiceModel: typeof InvoiceModel;
-  let mockInvoiceItemsModel: typeof InvoiceItemsModel;
 
   beforeEach(async() => {
     sequelize = new Sequelize({
