@@ -1,10 +1,10 @@
 import { Sequelize } from "sequelize-typescript"
+import Address from "../../@shared/domain/value-object/address"
+import ClientAdmFacadeFactory from "../factory/client-adm.facade.factory"
 import { ClientModel } from "../repository/client.model"
 import ClientRepository from "../repository/client.repository"
 import AddClientUseCase from "../usecase/add-client/add-client.usecase"
 import ClientAdmFacade from "./client-adm.facade"
-import ClientAdmFacadeFactory from "../factory/client-adm.facade.factory"
-import Address from "../../@shared/domain/value-object/address"
 
 
 describe("Client Adm Facade test", () => {
@@ -53,7 +53,7 @@ describe("Client Adm Facade test", () => {
 
     await facade.add(input)
 
-    const client = await ClientModel.findOne({ where: { id: "1" } })
+    const client = await ClientModel.findOne({ where: { id: "1" }, raw: true })
 
     expect(client).toBeDefined()
     expect(client.id).toBe(input.id)

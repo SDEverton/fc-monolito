@@ -1,9 +1,9 @@
 import { Sequelize } from "sequelize-typescript"
+import Address from "../../@shared/domain/value-object/address"
+import Id from "../../@shared/domain/value-object/id.value-object"
+import Client from "../domain/client.entity"
 import { ClientModel } from "./client.model"
 import ClientRepository from "./client.repository"
-import Client from "../domain/client.entity"
-import Id from "../../@shared/domain/value-object/id.value-object"
-import Address from "../../@shared/domain/value-object/address"
 
 describe("Client Repository test", () => {
 
@@ -46,7 +46,7 @@ describe("Client Repository test", () => {
     const repository = new ClientRepository()
     await repository.add(client)
 
-    const clientDb = await ClientModel.findOne({ where: { id: "1" } })
+    const clientDb = await ClientModel.findOne({ where: { id: "1" }, raw: true})
 
     expect(clientDb).toBeDefined()
     expect(clientDb.id).toEqual(client.id.id)
@@ -59,13 +59,13 @@ describe("Client Repository test", () => {
     expect(clientDb.city).toEqual(client.address.city)
     expect(clientDb.state).toEqual(client.address.state)
     expect(clientDb.zipcode).toEqual(client.address.zipCode)
-    expect(clientDb.createdAt).toStrictEqual(client.createdAt)
-    expect(clientDb.updatedAt).toStrictEqual(client.updatedAt)
+    expect(new Date(clientDb.createdAt).toISOString()).toEqual(client.createdAt.toISOString())
+    expect(new Date(clientDb.updatedAt).toISOString()).toEqual(client.updatedAt.toISOString())
   })
 
   it("should find a client", async () => {
 
-    const client = await ClientModel.create({
+    const client = {
       id: '1',
       name: 'Lucian',
       email: 'lucian@123.com',
@@ -78,7 +78,9 @@ describe("Client Repository test", () => {
       zipcode: "88888-888",      
       createdAt: new Date(),
       updatedAt: new Date()
-    })
+    }
+
+    await ClientModel.create(client)
 
     const repository = new ClientRepository()
     const result = await repository.find(client.id)
@@ -92,7 +94,8 @@ describe("Client Repository test", () => {
     expect(result.address.city).toEqual(client.city)
     expect(result.address.state).toEqual(client.state)
     expect(result.address.zipCode).toEqual(client.zipcode)
-    expect(result.createdAt).toStrictEqual(client.createdAt)
-    expect(result.updatedAt).toStrictEqual(client.updatedAt)
+    expect(new Date(result.createdAt).toISOString()).toEqual(client.createdAt.toISOString())
+    expect(new Date(result.updatedAt).toISOString()).toEqual(client.updatedAt.toISOString())
+ 
   })
 })
