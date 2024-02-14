@@ -40,11 +40,13 @@ describe('POST /clients', () => {
     const response = await request(app).post('/clients').send(clientData);
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('name', clientData.name);
   });
 
   it('should return 500 if there is an error', async () => {
     const clientData = {
-      name: '', // Dados inválidos para causar um erro
+      name: '',
       email: 'client@test.com',
       document: '123456789',
       address: 'Client Address',
@@ -52,6 +54,5 @@ describe('POST /clients', () => {
     const response = await request(app).post('/clients').send(clientData);
 
     expect(response.status).toBe(500);
-    // Aqui você pode adicionar mais expectativas sobre o corpo da resposta
   });
 });

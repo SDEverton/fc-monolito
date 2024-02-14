@@ -53,6 +53,8 @@ describe('GET /invoice/:id', () => {
     const response = await request(app).get(`/invoice/${invoice.id}`);
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('name', invoiceDto.name);
   });
 
   it('should return 500 if there is an error', async () => {

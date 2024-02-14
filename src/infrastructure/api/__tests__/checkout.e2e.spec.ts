@@ -37,6 +37,7 @@ describe('POST /checkout', () => {
     const response = await request(app).post('/checkout').send({ productId: body.id });
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('productId');
   });
 
   it('should return 500 if there is an error', async () => {

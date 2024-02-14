@@ -32,6 +32,8 @@ describe('POST /products', () => {
     const response = await request(app).post('/products').send(productData);
 
     expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty('id');
+    expect(response.body).toHaveProperty('name', productData.name);
   });
 
   it('should return 500 if there is an error', async () => {
